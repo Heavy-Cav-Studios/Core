@@ -1,0 +1,14 @@
+{
+    "name": "com.heavycavstudios.core",
+    "displayName": "Heavy Cav Studios Core Utilities",
+    "version": "1.0.0",
+    "unity": "2020.3",
+    "description": "A shared utility package for Heavy Cav Studios projects.",
+    "keywords": [
+        "utility"
+    ],
+    "author": {
+        "name": "Heavy Cav Studios",
+        "email": "heavycavstudios@gmail.com"
+    }
+}
