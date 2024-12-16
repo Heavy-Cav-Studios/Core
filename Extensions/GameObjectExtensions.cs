@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace HeavyCavStudios.Core.Extensions
 {
@@ -130,6 +132,32 @@ namespace HeavyCavStudios.Core.Extensions
         public static bool IsUIElement(this GameObject gameObject)
         {
             return gameObject.TryGetComponent<RectTransform>(out _);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="includeInactive"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static List<T> FindComponentsInScene<T>(this GameObject gameObject, bool includeInactive = false)
+        {
+            var components = new List<T>();
+            
+            foreach (var rootGameObject in SceneManager.GetActiveScene().GetRootGameObjects())
+            {
+                var foundComponents = rootGameObject.GetComponentsInChildren<T>(includeInactive: includeInactive);
+
+                if (!foundComponents.Any())
+                {
+                    continue;
+                }
+                
+                components.AddRange(foundComponents);
+            }
+
+            return components;
         }
     }
 }
