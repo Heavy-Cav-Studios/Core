@@ -56,6 +56,50 @@ namespace HeavyCavStudios.Core.Patterns.Events
 
             m_Handlers.Remove(handler);
         }
+                /// <summary>
+        /// Adds a handler to the event.
+        /// </summary>
+        /// <param name="handler">The event handler to be added.</param>
+        /// <exception cref="TypeMismatchException">Thrown when the handler type does not match the event type.</exception>
+        public void AddHandler(Delegate handler)
+        {
+            var handlerType = handler.GetType();
+            if (!IsHandlerTypeCompatible(handlerType))
+            {
+                throw new TypeMismatchException($"Event {m_Name} is of type {m_Type} and cannot add a listener of type {handlerType}");
+            }
+
+            m_Handlers.Add(handler);
+        }
+
+        /// <summary>
+        /// Removes a handler from the event.
+        /// </summary>
+        /// <param name="handler">The event handler to be removed.</param>
+        /// <exception cref="TypeMismatchException">Thrown when the handler type does not match the event type.</exception>
+        public void RemoveHandler(Delegate handler)
+        {
+            var handlerType = handler.GetType();
+            if (!IsHandlerTypeCompatible(handlerType))
+            {
+                throw new TypeMismatchException($"Event {m_Name} is of type {m_Type} and cannot remove a listener of type {handlerType}");
+            }
+
+            m_Handlers.Remove(handler);
+        }
+
+        /// <summary>
+        /// Checks if the handler type is compatible with the event type.
+        /// </summary>
+        /// <param name="handlerType">The handler type to check.</param>
+        /// <returns>True if compatible; otherwise, false.</returns>
+        bool IsHandlerTypeCompatible(Type handlerType)
+        {
+            // Ensure the handler is an EventHandler<> for the specific event type
+            return handlerType.IsGenericType &&
+                   handlerType.GetGenericTypeDefinition() == typeof(EventHandler<>) &&
+                   handlerType.GetGenericArguments()[0] == m_Type;
+        }
 
         /// <summary>
         /// Invokes all handlers for the event.
@@ -73,9 +117,16 @@ namespace HeavyCavStudios.Core.Patterns.Events
 
             var handlersCopy = m_Handlers.ToList();
 
-            foreach (EventHandler<T> handler in handlersCopy)
+            foreach (var handler in handlersCopy)
             {
-                handler?.Invoke(sender, args);
+                if (handler is EventHandler<T> eventHandler)
+                {
+                    eventHandler?.Invoke(sender, args);
+                }
+                else if (handler is Delegate @delegate)
+                {
+                    @delegate.DynamicInvoke(sender, args);
+                }
             }
         }
     }
