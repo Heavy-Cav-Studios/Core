@@ -53,5 +53,23 @@ namespace HeavyCavStudios.Core.Collections
             m_List.RemoveAt(index);
             OnElementRemoved?.Invoke(removedElement);
         }
+        public int Count => m_List.Count;
+
+        public T this[int index]
+        {
+            get => m_List[index];
+            set
+            {
+                var originalValue = m_List[index];
+                m_List[index] = value;
+                OnElementAdded?.Invoke(value);
+                OnElementRemoved?.Invoke(originalValue);
+            }
+        }
+
+        public List<T> ToList() => new List<T>(m_List);
+
+        public IEnumerator<T> GetEnumerator() => m_List.GetEnumerator();
+        
     }
 }
