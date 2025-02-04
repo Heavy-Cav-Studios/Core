@@ -1,3 +1,5 @@
+using HeavyCavStudios.Core.Services;
+
 namespace HeavyCavStudios.Core.Localization
 {
     /// <summary>
@@ -41,7 +43,7 @@ namespace HeavyCavStudios.Core.Localization
     /// </code>
     /// 
     /// </summary>
-    public interface ILocalizationService
+    public interface ILocalizationService : IService
     {
         /// <summary>
         /// Retrieves the localized string for the specified key.
