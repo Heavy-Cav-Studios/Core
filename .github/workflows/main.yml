@@ -1,0 +1,14 @@
+name: Publish to OpenUPM
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: openupm/openupm-publish@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
