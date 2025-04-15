@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: openupm/openupm-publish@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish package
+        run: npx openupm-cli publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
