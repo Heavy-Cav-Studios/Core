@@ -8,3 +8,6 @@ Added ILocalizationProvider.
 
 ## Version 1.2.0 - [2025-02-04]
 Added ServiceRegistry
+
+## Version 1.3.0 - [2025-04-15]
+Fixed issues with IService interface
