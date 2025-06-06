@@ -55,7 +55,10 @@ namespace HeavyCavStudios.Core.Patterns.Singleton
         /// </summary>
         protected virtual void OnDestroy()
         {
-            Instance = null;
+            if (Instance == this)
+            {
+                Instance = null;
+            }
         }
     }
 }
